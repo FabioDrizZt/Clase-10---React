@@ -1,0 +1,33 @@
+import { useState, useCallback, useMemo } from "react";
+import ThemeContext, { themes } from "./context";
+import Layout from "./components/Layout";
+import Navbar from "./components/Navbar";
+import Body from "./components/Body";
+
+function App() {
+  const [theme, setTheme] = useState(themes.light);
+
+  const handleChangeTheme = useCallback(() => {
+    if (theme === themes.dark) setTheme(themes.light);
+    if (theme === themes.light) setTheme(themes.dark);
+  }, [theme]);
+
+  const providerValue = useMemo(
+    () => ({
+      theme,
+      handleChangeTheme,
+    }),
+    [theme, handleChangeTheme]
+  );
+
+  return (
+    <ThemeContext.Provider value={providerValue}>
+      <Layout>
+        <Navbar />
+        <Body />
+      </Layout>
+    </ThemeContext.Provider>
+  );
+}
+
+export default App;
